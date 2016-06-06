@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Implementation-Title: dynengines-eurekaServer
+Implementation-Version: 0.0.1
+Built-By: caiovillela
+Implementation-Vendor-Id: br.com.sysk.dynengines
+Build-Jdk: 1.8.0_66
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: SYSK IT Solutions
+

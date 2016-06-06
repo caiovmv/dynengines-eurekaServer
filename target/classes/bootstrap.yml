@@ -1,0 +1,10 @@
+---
+spring:
+  application:
+    name: dynengines-eurekaServer
+  cloud:
+    config:
+      uri: http://localhost:10000
+server:
+ port: 8002
+  

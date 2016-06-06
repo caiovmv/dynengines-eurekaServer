@@ -1,0 +1,69 @@
+---
+# This default profile is used when running a single instance completely standalone:
+spring:
+  profiles: default
+server:
+  port: 12000 
+eureka:
+  instance:
+    hostname: localhost 
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/    
+
+# primary, secondary, and tertiary illustrate running 3 intercommunicating instances.  This example has them running
+# side-by-side on localhost -- which is unrealistic in production -- but does illustrate how multiple instances collaborate.
+# Run by opening 3 separate command prompts:
+# java -jar -Dspring.profiles.active=primary dynengines-eurekaServer.jar
+# java -jar -Dspring.profiles.active=secondary dynengines-eurekaServer.jar
+# java -jar -Dspring.profiles.active=tertiary dynengines-eurekaServer.jar
+
+---
+spring:
+  application:
+    name: eureka-server-clustered   
+  profiles: primary
+server:
+  port: 12000
+eureka:
+  instance:
+    hostname: 10.0.1.122      
+  client:
+    registerWithEureka: true
+    fetchRegistry: true        
+    serviceUrl:
+      defaultZone: http://eureka-secondary:12002/eureka/,http://eureka-tertiary:12003/eureka/
+
+---
+spring:
+  application:
+    name: eureka-server-clustered      
+  profiles: secondary
+server:
+  port: 12001
+eureka:
+  instance:
+    hostname: 10.0.1.123       
+  client:
+    registerWithEureka: true
+    fetchRegistry: true        
+    serviceUrl:
+      defaultZone: http://eureka-tertiary:12003/eureka/,http://eureka-primary:12001/eureka/
+
+---
+spring:
+  application:
+    name: eureka-server-clustered      
+  profiles: tertiary
+server:
+  port: 12003
+eureka:
+  instance:
+    hostname: 10.0.1.124       
+  client:
+    registerWithEureka: true
+    fetchRegistry: true    
+    serviceUrl:
+      defaultZone: http://eureka-primary:12001/eureka/,http://eureka-secondary:12002/eureka/      
